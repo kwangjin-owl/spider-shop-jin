@@ -1,6 +1,10 @@
 :root{
-  --ink:#1d1b17; --sub:#6f675c; --line:#e3ddd2; --bg:#faf7f1; --card:#fff;
-  --accent:#8a5a2b; --accent-ink:#fff;
+  /* 밤하늘에 가까운 검푸른 바탕. 순수한 검정보다 파랑이 조금 섞여 있습니다 */
+  --ink:#e9edf8; --sub:#93a0bc; --line:#273049; --bg:#0f1320; --card:#161c2e;
+  /* 빨강은 값과 버튼에만 씁니다 */
+  --accent:#d92534; --accent-ink:#fff;
+  /* 거미줄 실 색 */
+  --web:rgba(180,196,235,.10);
   --max:1040px;
 }
 *{box-sizing:border-box}
@@ -12,64 +16,98 @@ body{margin:0;background:var(--bg);color:var(--ink);
 a{color:inherit}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
 
-header.site{border-bottom:1px solid var(--line);background:var(--card)}
+/* 키보드로 옮겨 다닐 때 지금 어디에 있는지 보이게 합니다 */
+a:focus-visible,button:focus-visible,input:focus-visible{
+  outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+header.site{border-bottom:1px solid var(--line);background:#131829}
 header.site .wrap{display:flex;align-items:center;gap:20px;height:66px}
-.brand{font-size:19px;font-weight:700;text-decoration:none;letter-spacing:-.01em}
+.brand{font-size:19px;font-weight:800;text-decoration:none;letter-spacing:-.02em}
 nav.site{margin-left:auto;display:flex;gap:18px;font-size:14px}
 nav.site a{color:var(--sub);text-decoration:none}
 nav.site a:hover{color:var(--ink)}
 .cart-count{background:var(--accent);color:var(--accent-ink);border-radius:999px;
   padding:1px 8px;font-size:12px;margin-left:4px}
 
-.hero{padding:56px 0 40px;border-bottom:1px solid var(--line)}
-.hero h1{margin:0 0 10px;font-size:32px;letter-spacing:-.02em}
-.hero p{margin:0;color:var(--sub);font-size:16px}
+/* 첫 화면 오른쪽 위 구석에 거미줄이 한 장 쳐집니다.
+   둥근 테두리(radial)와 가운데서 뻗는 살(conic)을 겹쳐 그렸습니다 */
+.hero{position:relative;overflow:hidden;padding:64px 0 46px;
+  border-bottom:1px solid var(--line);
+  background:
+    repeating-radial-gradient(circle at 100% 0,
+      transparent 0 46px, var(--web) 46px 47px),
+    repeating-conic-gradient(from 180deg at 100% 0,
+      var(--web) 0deg .35deg, transparent .35deg 11.25deg),
+    linear-gradient(180deg,#141a2c 0%,var(--bg) 100%)}
+.hero .wrap{position:relative}
+.hero h1{margin:0 0 12px;font-size:38px;font-weight:800;letter-spacing:-.03em;line-height:1.25}
+.hero p{margin:0;color:var(--sub);font-size:16px;max-width:34em}
 
-main{padding:40px 0 80px}
-h2{font-size:22px;margin:0 0 18px;letter-spacing:-.01em}
-.lead{color:var(--sub);margin:0 0 28px}
+main{padding:44px 0 84px}
+h2{font-size:22px;font-weight:700;margin:0 0 18px;letter-spacing:-.02em}
+.lead{color:var(--sub);margin:0 0 28px;max-width:38em}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
   padding:22px;text-decoration:none;display:block;transition:.15s}
 .card:hover{border-color:var(--accent);transform:translateY(-2px)}
-.card .thumb{font-size:44px;line-height:1;margin-bottom:14px}
-.card h3{margin:0 0 6px;font-size:16px}
+/* 그림 자리에도 거미줄을 아주 옅게 깔아 둡니다 */
+.card .thumb{font-size:44px;line-height:1;margin-bottom:14px;
+  width:74px;height:74px;display:grid;place-items:center;border-radius:10px;
+  background:
+    repeating-radial-gradient(circle at 50% 50%,
+      transparent 0 11px, var(--web) 11px 12px),
+    #1b2238}
+.card h3{margin:0 0 6px;font-size:16px;font-weight:700}
 .card .sum{color:var(--sub);font-size:13.5px;margin:0 0 12px;min-height:40px}
-.card .price{font-weight:700}
+.card .price{font-weight:800;color:var(--accent)}
 
 .detail{display:grid;grid-template-columns:200px 1fr;gap:36px;align-items:start}
-.detail .thumb{font-size:110px;text-align:center;background:var(--card);
-  border:1px solid var(--line);border-radius:12px;padding:34px 0}
-.detail h1{margin:0 0 8px;font-size:26px}
-.detail .price{font-size:20px;font-weight:700;margin:0 0 22px}
-.detail .body p{margin:0 0 14px}
+.detail .thumb{font-size:110px;text-align:center;border:1px solid var(--line);
+  border-radius:12px;padding:34px 0;
+  background:
+    repeating-radial-gradient(circle at 50% 50%,
+      transparent 0 20px, var(--web) 20px 21px),
+    var(--card)}
+.detail h1{margin:0 0 8px;font-size:26px;font-weight:800;letter-spacing:-.02em}
+.detail .price{font-size:20px;font-weight:800;color:var(--accent);margin:0 0 22px}
+.detail .body p{margin:0 0 14px;max-width:38em}
 
 .btn{display:inline-block;background:var(--accent);color:var(--accent-ink);
-  border:0;border-radius:8px;padding:13px 26px;font-size:15px;font-weight:600;
+  border:0;border-radius:8px;padding:13px 26px;font-size:15px;font-weight:700;
   cursor:pointer;text-decoration:none;font-family:inherit}
-.btn:hover{filter:brightness(1.08)}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.12)}
+.btn.ghost{background:transparent;color:var(--sub);border:1px solid var(--line);font-weight:600}
+.btn.ghost:hover{color:var(--ink);border-color:var(--sub);filter:none}
 
 table.cart{width:100%;border-collapse:collapse;background:var(--card);
   border:1px solid var(--line);border-radius:12px;overflow:hidden}
 table.cart th,table.cart td{padding:15px 16px;border-bottom:1px solid var(--line);text-align:left}
-table.cart th{background:#f3efe7;font-size:13px;color:var(--sub);font-weight:600}
+table.cart th{background:#1b2238;font-size:13px;color:var(--sub);font-weight:600}
 table.cart tr:last-child td{border-bottom:0}
-.total{text-align:right;font-size:19px;font-weight:700;margin:22px 0 26px}
+.total{text-align:right;font-size:19px;font-weight:800;margin:22px 0 26px}
 
-.prose p{margin:0 0 16px}
+.prose p{margin:0 0 16px;max-width:38em}
 .empty{color:var(--sub);padding:52px 0;text-align:center}
 
 form.pay{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px;max-width:480px}
 form.pay label{display:block;font-size:13px;color:var(--sub);margin:0 0 6px}
 form.pay input{width:100%;padding:11px 13px;border:1px solid var(--line);
-  border-radius:8px;margin:0 0 18px;font-size:15px;font-family:inherit;background:#fff}
+  border-radius:8px;margin:0 0 18px;font-size:15px;font-family:inherit;
+  background:#0f1424;color:var(--ink)}
+form.pay input::placeholder{color:#5f6b87}
+form.pay input:focus{border-color:var(--accent)}
 
 footer.site{border-top:1px solid var(--line);padding:30px 0;color:var(--sub);font-size:13px}
 
 @media (max-width:640px){
   .detail{grid-template-columns:1fr}
-  .hero{padding:36px 0 28px}
-  .hero h1{font-size:26px}
+  .hero{padding:40px 0 30px}
+  .hero h1{font-size:28px}
+}
+
+/* 움직임을 줄여 달라고 설정한 분에게는 카드가 떠오르지 않습니다 */
+@media (prefers-reduced-motion:reduce){
+  .card{transition:none}
+  .card:hover{transform:none}
 }
