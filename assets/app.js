@@ -24,6 +24,27 @@ const Cart = {
     Cart.write(items);
 
     // ▼ 여기에 「장바구니에 담았다」를 알리는 코드가 들어갑니다 (뒤 수업에서)
+    const p = findProduct(id);
+    if (p) {
+      // value = 할인 후 상품 금액, 배송비 제외.
+      // 이 가게는 할인 전/후 가격을 따로 두지 않아 p.price 가 곧 실제로 받는 금액이고,
+      // 배송비는 p.price 에 들어 있지 않다. (나중에 할인가가 생기면 이 줄을 할인가로 바꾼다)
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ ecommerce: null });
+      window.dataLayer.push({
+        event: "add_to_cart",
+        ecommerce: {
+          currency: "KRW",
+          value: p.price,
+          items: [{
+            item_id: p.id,
+            item_name: p.name,
+            price: p.price,
+            quantity: 1
+          }]
+        }
+      });
+    }
 
   },
   remove(id) {
