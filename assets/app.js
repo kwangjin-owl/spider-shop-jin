@@ -159,6 +159,35 @@ function paintCheckout() {
   const form = document.querySelector("#pay-form");
   if (!form) return;
 
+  const checkoutItems = Cart.read().map(i => {
+    const p = findProduct(i.id);
+    if (!p) return null;
+    return {
+      item_id: p.id,
+      item_name: p.name,
+      price: p.price,
+      quantity: i.qty
+    };
+  }).filter(Boolean);
+
+  if (checkoutItems.length > 0) {
+    // value = 장바구니 상품들의 price × quantity 합계, 배송비 제외.
+    // 이 가게는 할인 전/후 가격을 따로 두지 않아 p.price 가 곧 실제로 받는 금액이다.
+    const checkoutValue = checkoutItems.reduce((sum, it) => sum + it.price * it.quantity, 0);
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: "begin_checkout",
+      free_shipping: checkoutValue >= 50000 ? "yes" : "no",
+      ecommerce: {
+        currency: "KRW",
+        value: checkoutValue,
+        items: checkoutItems
+      }
+    });
+  }
+
   const sum = document.querySelector("#pay-total");
   if (sum) sum.textContent = won(Cart.total());
 
