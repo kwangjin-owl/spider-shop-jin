@@ -194,7 +194,38 @@ function paintCheckout() {
   form.addEventListener("submit", e => {
     e.preventDefault();
 
-    // ▼ 여기에 「결제를 시작했다」를 알리는 코드가 들어갑니다 (뒤 수업에서)
+    // 「결제하기」를 눌러 주문을 마친 순간 — purchase
+    const orderItems = Cart.read().map(i => {
+      const p = findProduct(i.id);
+      if (!p) return null;
+      return {
+        item_id: p.id,
+        item_name: p.name,
+        price: p.price,
+        quantity: i.qty
+      };
+    }).filter(Boolean);
+
+    // value = 할인 후 상품 금액의 합계, 배송비 제외.
+    // 이 가게는 할인 전/후 가격을 따로 두지 않아 p.price 가 곧 실제로 받는 금액이고,
+    // 배송비는 p.price 에 들어 있지 않다. (나중에 할인가가 생기면 이 줄을 할인가로 바꾼다)
+    const orderValue = orderItems.reduce((sum, it) => sum + it.price * it.quantity, 0);
+
+    // 주문 번호: 주문을 마친 시각(1000분의 1초) + 무작위 글자 8자
+    const transactionId = "HARU-" + Date.now().toString(36).toUpperCase()
+      + "-" + Math.random().toString(36).slice(2, 10).toUpperCase();
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: "purchase",
+      ecommerce: {
+        transaction_id: transactionId,
+        currency: "KRW",
+        value: orderValue,
+        items: orderItems
+      }
+    });
 
     Cart.clear();
     location.href = "done.html";
